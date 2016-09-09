@@ -14,18 +14,43 @@
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <center><h1 style="font-family:verdana">NEW REGISTRATION</h1></center>
-<body style="background-color:Lavender;">
-<div class="container">
+<div class="fluid">
 <c:url var="addAction" value="adduser"></c:url>
 <form:form action="${addAction}" commandName="userDetails" method="post">
 
-<form:label path="name"><spring:message text="Name" /></form:label><form:input path="name" required="true" /><br>
-<form:label path="userName"><spring:message text="UserName" /></form:label><form:input path="userName" required="true" /><br>
-<form:label path="password"><spring:message text="Password" /></form:label><form:input path="password" required="true" /><br>
-<form:label path="mobile"><spring:message text="Mobile Number" /></form:label><form:input path="mobile" required="true" /><br>
-<form:label path="email"><spring:message text="Email" /></form:label><form:input path="email" required="true" /><br>
-<input type="submit" value="signup"/><br>
-	</form:form>
-	</div>
+		
+				<div>
+					<form:input path="name" type="text" placeholder="Name" 
+						pattern=".{5,15}" required="true" id="username" name="username"
+						title="minimum length for name is 5" />
+				</div>
+				<div>
+					<form:input path="userName" type="text" placeholder="Username"
+						pattern=".{5,15}" required="true" id="username" name="username"
+						title="minimum length for username is 5" />
+				</div>
+				<div>
+					<form:input path="password" type="password" placeholder="Password"
+						required="true" id="password" name="password" />
+				</div>
+				<div>
+					<input type="password" placeholder="Re-Enter Password"
+						required oninput="check(this)" />
+				</div>
+				<div>
+					<form:input path="email" type="email" placeholder="Email"
+						required="true" id="username" name="username" />
+				</div>
+				<div>
+					<form:input path="mobile" type="text" placeholder="Mobile"
+						pattern="^[789]\d{9}$" required="true" id="username"
+						name="username" title="Enter valid 10 digit mobile number" />
+				</div>
+				<div>
+					<input type="submit" value="Register" /> <a href="#">Lost your
+						password?</a> <a href="login">Sign In</a>
+				</div>
+
+			</form:form>	</div>
 </body>
 </html>

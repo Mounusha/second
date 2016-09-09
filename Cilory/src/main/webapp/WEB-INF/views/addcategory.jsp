@@ -7,12 +7,32 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<center><h2 style="font-family:verdana;">Category Page</h2></center>
+<center><br><br><h2 style="font-family:verdana;">Category Page</h2></center>
+<script
+	src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.17/angular.min.js"></script>
+
+<script>
+	var app = angular.module('myApp', []);
+	function MyController($scope, $http) {
+		$scope.sortType = 'name'; // set the default sort type
+		$scope.sortReverse = false; // set the default sort order
+		$scope.search = '';
+		$scope.getDataFromServer = function() {
+			$http({
+				method : 'GET',
+				url : 'categorygson'
+			}).success(function(data, status, headers, config) {
+				$scope.categories = data;// alert(data); 
+			}).error(function(data, status, headers, config) {
+			});
+		};
+	};
+</script>
+
 </head>
-<body>
 <body style="background-color:#ff3399;">
 <li style="float: right"><a href="perform_logout"
-	class="w3-hover-none"><i class="glyphicon glyphicon-log-out"></i></a></li>
+	class="btn btn-info"><i class="glyphicon glyphicon-log-out">logout</i></a></li>
 <c:url var="addAction" value="addcategory"></c:url>
 	<form:form action="${addAction}" commandName="category">
 	<center>
@@ -53,11 +73,12 @@
 					</c:if></td>
 			</tr>
 		</table>
+		</center>
 	</form:form>
 	<br>
 	
 	<c:if test="${!empty categoryList}">
-	<h3 style="font-family:verdana;">Category List</h3>
+	<center><h3 style="font-family:verdana;">Category List</h3></center>
 	<style>
 table {
     border-collapse: collapse;
@@ -68,29 +89,48 @@ table, td, th {
 }
 </style>
 	
-		<table class="tg">
-			<tr>
-				<th >category ID</th>
-				<th >category Name</th>
-				<th >category Description</th>
-				<th >Edit</th>
-				<th >Delete</th>
-			</tr>
-			<c:forEach items="${categoryList}" var="category">
-				<tr>
-					<td>${category.id}</td>
-					<td>${category.name}</td>
-					<td>${category.description}</td>
-					<td>
-					<form action="editcategory/${category.id}"  method="post">
-					<input type="submit" value="Edit">
-					</form></td>
-					<td><form action="removecategory/${category.id}">
-					<input type="submit" value="Delete">
-					</form></td>
-				</tr>
-			</c:forEach>
-		</table>
+		
+	<c:choose>
+		<c:when test="${!EditCategory}">
+			<div class="container" data-ng-app="myApp"
+				data-ng-controller="MyController" data-ng-init="getDataFromServer()">
+				<form>
+					<input
+						class="w3-input w3-animate-input w3-border w3-round w3-small"
+						data-ng-model="search" type="text" placeholder=" Search Category"
+						style="width: 60%">
+
+				</form>
+				<br>
+				<table class="table table-bordered table-hover ">
+					<thead>
+						<tr >
+							<th>Category ID</th>
+							<th>Category Name</th>
+							<th>Category Description</th>
+							<th>Edit</th>
+							<th>Delete</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr
+							data-ng-repeat="category in categories | orderBy:sortType:sortReverse | filter:search">
+							<td >{{category.id}}</td>
+							<td>{{category.name}}</td>
+							<td>{{category.description}}</td>
+							<td><a class="btn btn-info btn-xs"
+								href="editcategory/{{category.id}}">Edit</a></td>
+							<td><a class="btn btn-info btn-xs"
+								href="removecategory/{{category.id}}">Delete</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</c:when>
+		<c:otherwise>
+			<div style="margin-bottom: 70px"></div>
+		</c:otherwise>
+	</c:choose>
 		</center>
 	</c:if>
 </body>

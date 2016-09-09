@@ -14,7 +14,7 @@
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-<nav class="navbar navbar" style=background-color:lavender>
+<nav class="navbar navbar"></nav>
   <h1 style="font-family:verdana">LOGIN FORM</h1>
 <body>
 
@@ -22,31 +22,26 @@
 	<form action="perform_login" method="post">
 		<div class="panel panel-primary">
 			<div class="panel-heading center">LOGIN</div>
-
-
 			<div class="panel-body">
-				<div class="form-group">
-					<label for="text">User Name:</label> <input type="text"
-						name="username" class="form-control"  placeholder="Enter email">
+				<div class="well well-sm">
+				Username:
+					<input type="text" placeholder="Username" required id="username" name="username"
+					pattern=".{5,10}"title="minimum length for name is 5"/>
+				</div>
+				</div>
+			<div class="panel-body">
+				<div class="well well-sm">
+				Password:
+					<input type="password" placeholder="Password" required id="password" name="password" 
+				title="enter valid credentials"/>
 				</div>
 			</div>
-
-
 			<div class="panel-body">
-				<div class="form-group">
-					<label for="pwd">Password:</label> <input type="password"
-						name="password" class="form-control"  placeholder="Enter password">
-				</div>
-			</div>
-
-
-			<div class="panel-body">
-				<div class="checkbox">
 					<label><input type="checkbox"> Remember me</label>
 				</div>
-				<button type="submit" value="submit" class="btn btn-default">Submit</button>
-			</div>
-		</div>
+				<div>
+					<input type="submit" value="Log in" /> <br></div>
+</div>
 
 	</form>
 </body>

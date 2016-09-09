@@ -1,5 +1,6 @@
 package com.niit.Backend.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -14,10 +15,13 @@ public class Cart {
 
 	@Id
 	@GeneratedValue
-	private int id;
+	private int id; 
+	private String productid;
+	
 	private int userid;
 	private String productname;
-	private long  price;
+	private long price;
+	@Column(columnDefinition="int default 1")
 	private int quantity;
 	private String status;
 	public int getId() {
@@ -25,6 +29,12 @@ public class Cart {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public String getProductid() {
+		return productid;
+	}
+	public void setProductid(String productid) {
+		this.productid = productid;
 	}
 	public int getUserid() {
 		return userid;
@@ -56,7 +66,5 @@ public class Cart {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
-	
-		
+			
 }

@@ -7,14 +7,35 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Product</title>
+<center><br><br><h2 style="font-family:verdana;">Product Page</h2></center>
+<script
+	src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.17/angular.min.js"></script>
+
+<script>
+	var app = angular.module('myApp', []);
+	function MyController($scope, $http) {
+		$scope.sortType = 'name'; // set the default sort type
+		$scope.sortReverse = false; // set the default sort order
+		$scope.search ='';
+		$scope.getDataFromServer = function() {
+			$http({
+				method : 'GET',
+				url : 'productgson'
+			}).success(function(data, status, headers, config) {
+				$scope.products = data;// alert(data); 
+			}).error(function(data, status, headers, config) {
+			});
+		};
+	};
+</script>
 </head>
-<body>
 <body style="background-color:#ff3399;">
 <li style="float: right"><a href="perform_logout"
-	class="w3-hover-none"><i class="glyphicon glyphicon-log-out">logout</i></a></li>
+	class="btn btn-info"><i class="glyphicon glyphicon-log-out">logout</i></a></li>
 <c:url var="addAction" value="addproduct"></c:url>
-<center><h2 style="font-family:verdana;">Product Page</h2></center>
+
+
 <form:form action="${addAction}" commandName="product" enctype="Multipart/form-data">
 <center>
 		<table>
@@ -101,37 +122,53 @@
     border: 1px solid black;
 }
 </style>
-<center>
-		<table class="tg">
-			<tr>
-				<th >Product ID</th>
-				<th >Product Name</th>
-				<th >Product Description</th>
-				<th >Product Price</th>
-				<th>Supplier Id</th>
-				<th>Product Id</th>
-				<th >Edit</th>
-				<th >Delete</th>
-			</tr>
-			<c:forEach items="${productList}" var="product">
-				<tr>
-					<td>${product.id}</td>
-					<td>${product.name}</td>
-					<td>${product.description}</td>
-					<td>${product.price}</td>
-					<td>${product.supplierid}</td>
-				    <td>${product.categoryid}</td>
-					<td>
-					<form action="editproduct/${product.id}"  method="post">
-					<input type="submit" value="Edit">
-					</form></td>
-					<td><form action="removeproduct/${product.id}">
-					<input type="submit" value="Delete">
-					</form></td>
-				</tr>
-			</c:forEach>
-		</table>
-		</center>
+<c:choose>
+		<c:when test="${!EditProduct}">
+			<div class="container" data-ng-app="myApp"
+				data-ng-controller="MyController" data-ng-init="getDataFromServer()">
+				<form>
+					<input
+						class="w3-input w3-animate-input w3-border w3-round w3-small"
+						data-ng-model="search" type="text" placeholder=" Search Product"
+						style="width: 60%">
+
+				</form>
+				<br>
+				<table class="table table-bordered table-hover ">
+					<thead>
+						<tr >
+							<th>Product ID</th>
+							<th>Product Name</th>
+							<th>Product Description</th>
+							<th>Product Price</th>
+							<th>Supplier Id</th>
+							<th>Category Id</th>
+							<th>Edit</th>
+							<th>Delete</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr
+							data-ng-repeat="product in products | orderBy:sortType:sortReverse | filter:search">
+							<td>{{product.id}}</td>
+							<td>{{product.name}}</td>
+							<td>{{product.description}}</td>
+							<td>{{product.price}}</td>
+							<td>{{product.supplierid}}</td>
+							<td>{{product.categoryid}}</td>
+							<td><a class="btn btn-info btn-xs"
+								href="editproduct/{{product.id}}">Edit</a></td>
+							<td><a class="btn btn-info btn-xs"
+								href="removeproduct/{{product.id}}">Delete</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</c:when>
+		<c:otherwise>
+			<div style="margin-bottom: 70px"></div>
+		</c:otherwise>
+	</c:choose>
 	</c:if>
 </body>
 </html>

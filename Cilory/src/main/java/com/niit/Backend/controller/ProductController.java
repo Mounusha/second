@@ -1,5 +1,8 @@
 package com.niit.Backend.controller;
 
+
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +12,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 //import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.multipart.MultipartFile;
-
+import com.google.gson.Gson;
 import com.niit.Backend.dao.ProductDAO;
 import com.niit.Backend.model.Product;
 import com.niit.Backend.dao.CategoryDAO;
@@ -36,7 +40,7 @@ public class ProductController {
 		model.addAttribute("categoryList",categoryDAO.list());
 		model.addAttribute("supplierList", supplierDAO.list());
 		model.addAttribute("ProductPageClicked", "true");
-		return "addproduct";
+		return "index";
 	}
 
 	@RequestMapping(value = { "addproduct", "editproduct/addproduct" }, method = RequestMethod.POST)
@@ -68,5 +72,14 @@ public class ProductController {
 		model.addAttribute("message", "Successfully Deleted");
 		return "redirect:/product";
 	}
+	 @RequestMapping(value="/productgson")
+		@ResponseBody
+		public String ProductGson()
+		{
+			List<Product> list=productDAO.list();
+			Gson gson=new Gson();
+			String data=gson.toJson(list);
+			return data;
+		}	
 }
 

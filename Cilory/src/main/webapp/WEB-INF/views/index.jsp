@@ -24,7 +24,7 @@
 
 </head>
 <body>
-<nav class="navbar navbar" style=background-color:#ff3399>
+<nav class="navbar" style=background-color:#ff3399>
 <nav class="navbar navbar-inverse">
 			<div class="navbar-header">
 				<a class="navbar-brand" href="#"><h4>Welcome to Cilory</h4></a>
@@ -33,10 +33,10 @@
 					<c:when test="${LoggedIn}">
 
 						<li style="float: right"><a href="perform_logout"
-							class="w3-hover-none"><i class="glyphicon glyphicon-log-out"></i></a></li>
+							class="w3-hover-none"><i class="glyphicon glyphicon-log-out">logout</i></a></li>
 						<c:choose>	
 						<c:when test="${!Administrator}">	
-						<li style="float: right"><a href="${userId}/viewcart"
+						<li style="float: right"><a href="viewcart"
 							class="w3-hover-none"><i class="glyphicon glyphicon-shopping-cart"></i></a></li>
 						</c:when>
 						</c:choose>
@@ -44,8 +44,6 @@
 						<li style="float: right"><a href="#" class="w3-hover-none"><i
 								class="glyphicon glyphicon-user"></i> Hi, ${name}</a></li>
 					</c:when>
-
-	
 					<c:otherwise>
 						<div class="collapse navbar-collapse" >
                           <ul class="nav navbar-nav navbar-right">	
@@ -69,24 +67,35 @@
 			<c:if test="${!empty categoryList}">
 				<div class="container fluid" >
                  <ul class="nav navbar-nav navbar-left">
+                 <ul class="nav nav-pills">
 						<c:forEach items="${categoryList}" var="category">
-							<li><a href="${category.name}"><i class="fa fa-list-alt" aria-hidden="true"></i> ${category.name}</a></li>
+							<li><a href="${category.name}"> ${category.name}</a></li>
 						</c:forEach>
+					</ul>
 					</ul>
 				</div>
 			</c:if>	
 		</c:when>	
 		<c:when test="${Administrator}">
-				<li><a href="product"class="w3-hover-none"><i class="fa fa-list"
-					aria-hidden="true"></i> Products</a></li>
-				<li><a href="category" class="w3-hover-none"><i class="fa fa-list"
-					aria-hidden="true"></i> Category</a></li>
-				<li><a href="supplier" class="w3-hover-none"><i class="fa fa-list"
-					aria-hidden="true"></i> Supplier</a></li>
+                 <div class="btn-group btn-group-justified">
+				<div class="btn-group"><a href="product"class="btn btn-primary"> Products</a></div>
+				<div class="btn-group"><a href="category" class="btn btn-primary">Category</a></div>
+				<div class="btn-group"><a href="supplier" class="btn btn-primary"> Supplier</a></div>
+					</div>
+			
 		</c:when>
 	</c:choose>
 	<!-- Category List End -->
-	
+	<c:choose>
+	<c:when test="${IfViewCartClicked}">
+		<c:import url="/WEB-INF/views/cart.jsp">
+		</c:import>
+	</c:when>
+		<c:when test="${IfPaymentClicked}">
+			<c:import url="/WEB-INF/views/Payment.jsp">
+			</c:import>
+		</c:when>
+	</c:choose>			
 	<c:choose>
 	<c:when test="${IfLoginClicked}">
 		<c:import url="/WEB-INF/views/login.jsp">
@@ -111,7 +120,10 @@
 			<c:when test="${SupplierPageClicked}">
 				<c:import url="/WEB-INF/views/addsupplier.jsp"></c:import>
 			</c:when>
-		</c:choose>
+	</c:choose>
+	<c:choose>
+		<c:when test="${!Administrator}">
+		<c:if test="${empty HideOthers}">
 <div class="container">
   <br>
   <div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -158,27 +170,50 @@
     </a>
   </div>
 </div>
+</c:if></c:when></c:choose>
 
 <div style="width:100%; height:20;"></div>
-	<c:choose>	
-	<c:when test="${!Administrator}">	
-	<c:if test="${!empty productList}">
-		<div>
-			<ul>
-				<c:forEach items="${productList}" var="product">
-					<li><a href="#${product.name}" class="w3-hover-none"><img alt="${product.id}" src="<c:url value="/resources/Images/product/${product.id}.jpg"></c:url>"></a></li>
-					<c:choose>
-					<c:when test="${LoggedIn}">	
-					<li><a href="${userId}/addtoCart/${product.id}"
-						class="w3-hover-none">Add to Cart</a></li>
-						</c:when>
-						</c:choose>
-				</c:forEach>
-			</ul>
-		</div>
+<c:if test="${empty HideOthers}">
+		<c:choose>
+			<c:when test="${!Administrator}">
+				<c:if test="${!empty productList}">
+					<div>
+						<!-- <ul> -->
+						<div class="row w3-card-8 w3-margin" style="margin-bottom: 0px">
+							<br>
+							<c:forEach items="${productList}" var="product">
+								<div class="col-xs-2 ">
+									<div class="thumbnail">
+										<img height="150px" width="150px" alt="${product.id}"
+											src="<c:url value="/resources/Images/product/${product.id}.jpg"></c:url>">
+										<div class="caption">
+											<p>
+												${product.name}
+												<c:choose>
+													<c:when test="${LoggedIn}">
+														<form action="addtoCart/${userId}/${product.id}">
+															<input type="number" value="1" name="quantity"
+																class="btn btn-xs btn-primary   col-xs-6 ">
+															<input type="submit" value="Add" class="btn btn-xs col-xs-6 btn-primary">
+														</form>
+														
+													</c:when>
+												</c:choose>
+											</p>
+
+										</div>
+									</div>
+								</div>
+								</c:forEach>
+						</div>
+						
+					</div>
+				</c:if>
+			</c:when>
+		</c:choose>
 	</c:if>
-	</c:when>
-	</c:choose>
+
+
 </body>
 </html>
 
