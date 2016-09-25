@@ -20,14 +20,10 @@ public class CartDAOImpl implements CartDAO {
 	
 	@Autowired
 	private SessionFactory sessionFactory;
-
-
 	public CartDAOImpl(SessionFactory sessionFactory) 
 	{
 		this.sessionFactory = sessionFactory;
 	}
-	
-	
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<Cart> list() {
@@ -37,9 +33,6 @@ public class CartDAOImpl implements CartDAO {
 
 			return listCategory;
 		}
-
-
-	
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<Cart> get(int userId) {
@@ -49,18 +42,17 @@ public class CartDAOImpl implements CartDAO {
 		List<Cart> list = (List<Cart>)query.list();
 		return list;
 	}
-
 	@Transactional
 	public void saveOrUpdate(Cart cart) {
 		sessionFactory.getCurrentSession().saveOrUpdate(cart);
 		
 	}
-
-	public void delete(int userId) {
-		// TODO Auto-generated method stub
-		
+	@Transactional
+	public void delete(int cartid) {
+		Cart cart = new Cart();
+		cart.setId(cartid);
+		sessionFactory.getCurrentSession().delete(cart);
 	}
-	
 	@Transactional
 	public long CartPrice(int userId) {
 		Criteria c=sessionFactory.getCurrentSession().createCriteria(Cart.class);
@@ -69,9 +61,7 @@ public class CartDAOImpl implements CartDAO {
 		c.setProjection(Projections.sum("price"));
 		Long l= (Long) c.uniqueResult();
 		return l;
-		
 	}
-	
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public Cart getitem(int cartId) {
@@ -102,14 +92,19 @@ public class CartDAOImpl implements CartDAO {
 		c.add(Restrictions.eq("userid", userId));
 		c.add(Restrictions.eq("status","C"));
 		c.setProjection(Projections.count("userid"));
-		long count=(long)c.uniqueResult();
+		long count=(long) c.uniqueResult();
 		return count;
 	}
 	@Transactional
 	public void pay(int userId) {
 		String hql="update Cart set status='P' where userid="+userId;	
+		@SuppressWarnings("rawtypes")
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
 		query.executeUpdate();
 	}
-
+	@Override
+	public Cart getitem(int productid, int userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

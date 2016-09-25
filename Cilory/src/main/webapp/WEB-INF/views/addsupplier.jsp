@@ -7,130 +7,106 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<center><br><br><h2 style="font-family:verdana;">Supplier Page</h2>
+<title>SUPPLIER</title>
 <script
-	src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.17/angular.min.js"></script>
-<script>
-	var app = angular.module('myApp', []);
-	function MyController($scope, $http) {
-		$scope.sortType = 'name'; // set the default sort type
-		$scope.sortReverse = false; // set the default sort order
-		$scope.search = '';
-		$scope.getDataFromServer = function() {
-			$http({
-				method : 'GET',
-				url : 'suppliergson'
-			}).success(function(data, status, headers, config) {
-				$scope.suppliers = data;// alert(data); 
-			}).error(function(data, status, headers, config) {
-			});
-		};
-	};
-</script>
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 </head>
 <body>
-<body style="background-color:#ff3399;">
-<li style="float: right"><a href="perform_logout"
-	class="btn btn-info"><i class="glyphicon glyphicon-log-out">logout</i></a></li>
-<c:url var="addAction" value="addsupplier"></c:url>
-	<form:form action="${addAction}" commandName="supplier">
-	<center>
-		<table>
-			<tr>
-				<td><form:label path="id">
-						<spring:message text="ID" />
-					</form:label></td>
-				<c:choose>
-					<c:when test="${!empty supplier.id}">
-						<td><form:input path="id" disabled="true" readonly="true" />
-						</td>
-					</c:when>
+	<h1>SUPPLIER PAGE</h1>
+	
+	
+	<c:url var="addAction" value="addsupplier"></c:url>
 
-					<c:otherwise>
-						<td><form:input path="id" pattern =".{3,10}" required="true" title="id should contains 3 to 10 characters" /></td>
-					</c:otherwise>
-				</c:choose>
-			<tr>
-			<form:input path="id" hidden="true"  />
-				<td><form:label path="name">
-						<spring:message text="Name" />
-					</form:label></td>
-				<td><form:input path="name" required="true" /></td>
-			</tr>
-			<tr>
-				<td><form:label path="address">
-						<spring:message text="Address" />
-					</form:label></td>
-				<td><form:input path="address" required="true" /></td>
-			</tr>			
-			<tr>
-				<td colspan="2"><c:if test="${!empty supplier.name}">
-						<input type="submit"
-							value="<spring:message text="Edit Supplier"/>" />
-					</c:if> <c:if test="${empty supplier.name}">
-						<input type="submit" value="<spring:message text="Add Supplier"/>" />
-					</c:if></td>
-			</tr>
+	<form:form action="${addAction}" commandName="supplier"
+		enctype="multipart/form-data" method="post">
+		
+			<table class="panel panel-danger">
+			<thead>
+				<tr>
+					<%-- <td><form:label path="id">
+							<spring:message text="ID" />
+						</form:label></td> --%>
+					<c:choose>
+						<c:when test="${!empty supplier.id}">
+							<%-- <td><form:input path="id" disabled="true" readonly="true" /> --%>
+							</td>
+						</c:when>
+
+						<c:otherwise>
+							<td><form:input path="id" pattern="{3,10}" required="true"
+									title="id should contains 3 to 10 characters" /></td>
+						</c:otherwise>
+					</c:choose>
+				<tr>
+					<form:input path="id" hidden="true" />
+					<td><form:label path="name">
+							<spring:message text="Name" />
+						</form:label></td>
+					<td><form:input path="name" required="true" /></td>
+				</tr>
+				<tr>
+					<td><form:label path="address">
+							<spring:message text="Address" />
+						</form:label></td>
+					<td><form:input path="address" required="true" /></td>
+				</tr>
+
+				<%-- <tr>
+					<td><form:label path="image">
+							<spring:message text="Image" />
+						</form:label></td>
+					<td><form:input type="file" path="image" required="true" /></td>
+				</tr> --%>
+
+
+				<tr>
+					<td colspan="2"><c:if test="${!empty supplier.name}">
+							<input type="submit"
+								value="<spring:message text="Edit Supplier"/>" />
+						</c:if> <c:if test="${empty supplier.name}">
+							<input type="submit"
+								value="<spring:message text="Add Supplier"/>" />
+						</c:if></td>
+				</tr>
 		</table>
-		</center>
 	</form:form>
 	<br>
-	
+
 	<c:if test="${!empty supplierList}">
-	<h3 style="font-family:verdana;">Supplier List</h3>
-	<style>
-table {
-    border-collapse: collapse;
-}
+		<h1>Supplier List</h1>
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>Supplier ID</th>
+					<th>Supplier Name</th>
+					<th>Supplier Address</th>
 
-table, td, th {
-    border: 1px solid black;
-}
-</style>
+
+
+					<th>Edit</th>
+					<th>Delete</th>
+				</tr>
+				<c:forEach items="${supplierList}" var="supplier">
+					<tr>
+						<td>${supplier.id}</td>
+						<td>${supplier.name}</td>
+						<td>${supplier.address}</td>
+
+						<td>
+							<form action="editsupplier/${supplier.id}" method="post">
+								<input type="submit" value="Edit" class="w3-btn w3-blue">
+							</form>
+						</td>
+						<td><form action="removesupplier/${supplier.id}">
+								<input type="submit" value="Delete" class="w3-btn w3-red">
+							</form></td>
+					</tr>
+				</c:forEach>
+			</thead>
+		</table>
+	</c:if>
+	
 	
 
-	<c:choose>
-		<c:when test="${!EditSupplier}">
-			<div class="container" data-ng-app="myApp"
-				data-ng-controller="MyController" data-ng-init="getDataFromServer()">
-				<form>
-					<input
-						class="w3-input w3-animate-input w3-border w3-round w3-small"
-						data-ng-model="search" type="text" placeholder=" Search Supplier"
-						style="width:60%">
-
-				</form>
-				<br>
-				
-				<table class="table table-bordered table-hover ">
-					<thead>
-						<tr >
-							<th>Supplier ID</th>
-							<th>Supplier Name</th>
-							<th>Supplier Address</th>
-							<th>Edit</th>
-							<th>Delete</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr
-							data-ng-repeat="supplier in suppliers | orderBy:sortType:sortReverse | filter:search">
-							<td >{{supplier.id}}</td>
-							<td>{{supplier.name}}</td>
-							<td>{{supplier.address}}</td>
-							<td><a class="btn btn-info btn-xs"
-								href="editsupplier/{{supplier.id}}">Edit</a></td>
-							<td><a class="btn btn-info btn-xs"
-								href="removesupplier/{{supplier.id}}">Delete</a></td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</c:when>
-		<c:otherwise>
-			<div style="margin-bottom: 70px"></div>
-		</c:otherwise>
-	</c:choose>
-	</c:if>
 </body>
 </html>

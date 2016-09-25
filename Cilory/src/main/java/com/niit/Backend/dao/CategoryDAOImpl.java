@@ -2,22 +2,23 @@ package com.niit.Backend.dao;
 
 import java.util.List;
 
-import javax.persistence.Query;
-
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.niit.Backend.model.Category;
 
+import com.niit.Backend.model.Category;
+@SuppressWarnings("deprecation")
 @Repository("categoryDAO")
 
 public class CategoryDAOImpl  implements CategoryDAO{
 	
 	@Autowired
 	private SessionFactory sessionFactory;
+	
 	public CategoryDAOImpl(SessionFactory sessionFactory){
 		this.sessionFactory=sessionFactory;
 	}
@@ -26,9 +27,11 @@ public class CategoryDAOImpl  implements CategoryDAO{
 
 	public List<Category> list() {
 
-		@SuppressWarnings({ "unchecked", "deprecation" })
-		List<Category> listCategory=(List<Category>) sessionFactory.getCurrentSession().createCriteria(Category.class)
-		.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
+		@SuppressWarnings("unchecked")
+		List<Category> listCategory = (List<Category>) sessionFactory.getCurrentSession()
+				.createCriteria(Category.class)
+				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
+
 		return listCategory;
 		
 	}
@@ -40,8 +43,8 @@ public class CategoryDAOImpl  implements CategoryDAO{
 	
 		
 	}
-	@Transactional
-	public void delete(String id) {
+@Transactional
+	public void delete(int id) {
 		Category CategoryToDelete = new Category();
 		CategoryToDelete.setId(id);
 		sessionFactory.getCurrentSession().delete(CategoryToDelete);
@@ -49,17 +52,19 @@ public class CategoryDAOImpl  implements CategoryDAO{
 		
 	}
 	@Transactional
-	public Category get(String id) {
-		String hql="from"+" Category"+" where id=" + "'"+id+"'";
+	public Category get(int id) {
+		String hql = "from"+" Category"+" where id=" +id;
+		@SuppressWarnings("rawtypes")
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
 		
-		Query query=sessionFactory.getCurrentSession().createQuery(hql);
 		@SuppressWarnings("unchecked")
-		List<Category> listCategory = (List<Category>)query.getResultList();
-		if(listCategory != null && !listCategory.isEmpty()){
+		List<Category> listCategory = (List<Category>) query.list();
+		
+		if (listCategory != null && !listCategory.isEmpty()) {
 			return listCategory.get(0);
 		}
-		return null;
 		
+		return null;
 
 	}
 

@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 import org.springframework.stereotype.Component;
 
 @Entity
@@ -16,7 +15,7 @@ public class Cart {
 	@Id
 	@GeneratedValue
 	private int id; 
-	private String productid;
+	private int productid;
 	
 	private int userid;
 	private String productname;
@@ -24,16 +23,17 @@ public class Cart {
 	@Column(columnDefinition="int default 1")
 	private int quantity;
 	private String status;
+	
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getProductid() {
+	public int getProductid() {
 		return productid;
 	}
-	public void setProductid(String productid) {
+	public void setProductid(int productid) {
 		this.productid = productid;
 	}
 	public int getUserid() {
@@ -66,5 +66,5 @@ public class Cart {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-			
-}
+	
+		}

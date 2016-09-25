@@ -9,11 +9,24 @@
 <head>
   <title>Cilory</title>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="<c:url value="/resources/css/my.css" />" rel="stylesheet">
+<link href="<c:url value="/resources/css/w3.css" />" rel="stylesheet">
+<link
+	href="<c:url value="/resources/css/footer-distributed-with-address-and-phones.css" />"
+	rel="stylesheet">
+<link href="<c:url value="/resources/css/font-awesome.min.css" />"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script
+	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script
+	src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.17/angular.min.js"></script><style>
   .carousel-inner > .item > img,
   .carousel-inner > .item > a > img {
       width: 80%;
@@ -24,10 +37,10 @@
 
 </head>
 <body>
-<nav class="navbar" style=background-color:#ff3399>
+<nav class="navbar" style=background-color:#FFF8DC>
 <nav class="navbar navbar-inverse">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="#"><h4>Welcome to Cilory</h4></a>
+				<a class="navbar-brand" href="index"><h4>Welcome to Cilory</h4></a>
 			<ul class="nav navbar-nav"></ul></div>
 			<c:choose>
 					<c:when test="${LoggedIn}">
@@ -37,7 +50,7 @@
 						<c:choose>	
 						<c:when test="${!Administrator}">	
 						<li style="float: right"><a href="viewcart"
-							class="w3-hover-none"><i class="glyphicon glyphicon-shopping-cart"></i></a></li>
+							class="w3-hover-none"><i class="glyphicon glyphicon-shopping-cart"></i>(${cartsize})</a></li>
 						</c:when>
 						</c:choose>
 
@@ -61,7 +74,8 @@
 					</c:otherwise>
 				</c:choose>
 				</nav>
-		 	<c:choose>	
+				
+	<c:choose>	
 		<c:when test="${!Administrator}">	
 			<!-- Category List -->
 			<c:if test="${!empty categoryList}">
@@ -69,7 +83,9 @@
                  <ul class="nav navbar-nav navbar-left">
                  <ul class="nav nav-pills">
 						<c:forEach items="${categoryList}" var="category">
-							<li><a href="${category.name}"> ${category.name}</a></li>
+								<li><a href="view/${category.id}"><i
+										class="glyphicon glyphicon-align-justify" aria-hidden="true"></i>
+										${category.name}</a></li>
 						</c:forEach>
 					</ul>
 					</ul>
@@ -84,43 +100,55 @@
 					</div>
 			
 		</c:when>
-	</c:choose>
-	<!-- Category List End -->
+	</c:choose><!-- category list -->
 	<c:choose>
-	<c:when test="${IfViewCartClicked}">
-		<c:import url="/WEB-INF/views/cart.jsp">
-		</c:import>
-	</c:when>
+		<c:when test="${IfViewCartClicked}">
+			<c:import url="/WEB-INF/views/cart.jsp">
+			</c:import>
+		</c:when>
+		<c:when test="${IndividualItemClicked}">
+			<c:import url="/WEB-INF/views/IndividualItem.jsp">
+			</c:import>
+		</c:when>
+
 		<c:when test="${IfPaymentClicked}">
 			<c:import url="/WEB-INF/views/Payment.jsp">
 			</c:import>
 		</c:when>
-	</c:choose>			
+		<c:when test="${ViewCategoryClicked}">
+			<c:import url="/WEB-INF/views/viewitem.jsp">
+			</c:import>
+		</c:when>
+	</c:choose>
+	<!-- Category List End -->
 	<c:choose>
-	<c:when test="${IfLoginClicked}">
-		<c:import url="/WEB-INF/views/login.jsp">
-		</c:import>
-	</c:when>	
-	<c:when test="${IfRegisterClicked}">
-		<c:import url="/WEB-INF/views/register.jsp">
-		</c:import>
-	</c:when>
+		<c:when test="${IfLoginClicked}">
+			<c:import url="/WEB-INF/views/login.jsp">
+			</c:import>
+		</c:when>
+
+		<c:when test="${IfRegisterClicked}">
+			<c:import url="/WEB-INF/views/register.jsp">
+			</c:import>
+		</c:when>
+	</c:choose>
+
+	<c:choose>
+		<c:when test="${ProductPageClicked}">
+			<c:import url="/WEB-INF/views/addproduct.jsp"></c:import>
+		</c:when>
 	</c:choose>
 	<c:choose>
-			<c:when test="${ProductPageClicked}">
-				<c:import url="/WEB-INF/views/addproduct.jsp"></c:import>
-			</c:when>
-		</c:choose>
-		<c:choose>
-			<c:when test="${CategoryPageClicked}">
-				<c:import url="/WEB-INF/views/addcategory.jsp"></c:import>
-			</c:when>
-		</c:choose>
-		<c:choose>
-			<c:when test="${SupplierPageClicked}">
-				<c:import url="/WEB-INF/views/addsupplier.jsp"></c:import>
-			</c:when>
+		<c:when test="${CategoryPageClicked}">
+			<c:import url="/WEB-INF/views/addcategory.jsp"></c:import>
+		</c:when>
 	</c:choose>
+	<c:choose>
+		<c:when test="${SupplierPageClicked}">
+			<c:import url="/WEB-INF/views/addsupplier.jsp"></c:import>
+		</c:when>
+	</c:choose>
+	
 	<c:choose>
 		<c:when test="${!Administrator}">
 		<c:if test="${empty HideOthers}">
@@ -184,7 +212,7 @@
 							<c:forEach items="${productList}" var="product">
 								<div class="col-xs-2 ">
 									<div class="thumbnail">
-										<img height="150px" width="150px" alt="${product.id}"
+										<img height="200px" width="200px" alt="${product.id}"
 											src="<c:url value="/resources/Images/product/${product.id}.jpg"></c:url>">
 										<div class="caption">
 											<p>
@@ -212,7 +240,67 @@
 			</c:when>
 		</c:choose>
 	</c:if>
+	</nav>
+	<footer>
+<div style="background: Lavender">
 
+ <c:choose>
+ <c:when test="${!Administrator}">
+			<c:if test="${empty HideOthers}">
+	<table class="table">
+		<thead>
+			<tr>
+				<th>OUR COMPANY</th>
+				<th>TOP CATEGORIES</th>
+				<th>POLICIES AND INFO</th>
+			</tr>
+		</thead>
+		<tbody>
+
+			<tr>
+
+				<td>About us<br> Cilory in Media<br> Ethnico<br>
+					Place of Origin<br> Blog<br></td>
+
+				<td>Sarees<br> Laptop<br> camera<br>
+					mobile<br> Toys<br></td>
+				<td>Terms & Conditions<br> Policy for Sellers<br>
+					Policy for Buyers<br> Shipping & Refund Policies<br>
+					Wholesale Policy<br> Privacy Policy<br></td>
+			</tr>
+			<tr>
+				<th>SUPPORT</th>
+				<th>PAYMENT OPTIONS</th>
+				<th>STAY CONNECTED</th>
+			</tr>
+			
+			
+			<tr>
+			<td><i class="fa fa-envelope" style="font-size: 30px;"></i>
+			
+					<a href="mailto:supportproduct@company.com">supportproduct@Cilory.com</a><br>
+					<i class="fa fa-phone" style="font-size: 30px; "></i>
+				<a>+91 9876356377</a>
+				<i class="fa fa-map-marker" style="font-size: 30px; color:"></i>
+				<a>
+					 Banjara hills road no.12 India</a>
+				</td>
+				<td><div class="footer-icons">
+				<a href="#"><i class="fa fa-facebook-official"style="font-size: 30px; "></i> </a>
+				<a href="#"><i class="fa fa-twitter" style="font-size: 30px; "></i></a>
+				<a href="#"><i class="fa fa-google" style="font-size: 30px; "></i></a>
+						<a href="#"><i class="fa fa-whatsapp" style="font-size: 30px; "></i></a>
+						<a href="#"><i class="fa fa-github"style="font-size: 30px; "></i></a>
+			</div></td>
+			<td>
+				<a href="#"><i class="fa fa-cc-mastercard" aria-hidden="true" style="font-size: 30px; "></i>
+			</a> . <a href="#"><i class="fa fa-cc-visa" aria-hidden="true" style="font-size: 30px;"></i> </a>
+			. <a href="#"><i class="fa fa-credit-card" aria-hidden="true" style="font-size: 30px; "></i>
+			</a></td>		
+			</tbody>
+	</table>
+</c:if></c:when></c:choose></div>
+</footer>
 
 </body>
 </html>

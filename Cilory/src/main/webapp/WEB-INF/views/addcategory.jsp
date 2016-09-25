@@ -7,11 +7,10 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<center><br><br><h2 style="font-family:verdana;">Category Page</h2></center>
+<title>CATEGORY</title>
 <script
-	src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.17/angular.min.js"></script>
-
-<script>
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<script>
 	var app = angular.module('myApp', []);
 	function MyController($scope, $http) {
 		$scope.sortType = 'name'; // set the default sort type
@@ -28,27 +27,27 @@
 		};
 	};
 </script>
+	
 
 </head>
-<body style="background-color:#ff3399;">
-<li style="float: right"><a href="perform_logout"
-	class="btn btn-info"><i class="glyphicon glyphicon-log-out">logout</i></a></li>
+<body><h1>CATEGORY PAGE</h1>
 <c:url var="addAction" value="addcategory"></c:url>
+
 	<form:form action="${addAction}" commandName="category">
-	<center>
-		<table>
-			<tr>
-				<td><form:label path="id">
+		
+			<table class="panel panel-danger">
+		<thead>			<tr>
+				<%-- <td><form:label path="id">
 						<spring:message text="ID" />
-					</form:label></td>
+					</form:label></td> --%>
 				<c:choose>
 					<c:when test="${!empty category.id}">
-						<td><form:input path="id" disabled="true" readonly="true" />
-						</td>
+						<%-- <td><form:input path="id" disabled="true" readonly="true" />
+						</td> --%>
 					</c:when>
 
 					<c:otherwise>
-						<td><form:input path="id" pattern =".{3,10}" required="true" title="id should contains 3 to 10 characters" /></td>
+						<td><form:input path="id" pattern ="{3,10}" required="true" title="id should contains 3 to 10 characters" /></td>
 					</c:otherwise>
 				</c:choose>
 			<tr>
@@ -73,23 +72,9 @@
 					</c:if></td>
 			</tr>
 		</table>
-		</center>
 	</form:form>
 	<br>
 	
-	<c:if test="${!empty categoryList}">
-	<center><h3 style="font-family:verdana;">Category List</h3></center>
-	<style>
-table {
-    border-collapse: collapse;
-}
-
-table, td, th {
-    border: 1px solid black;
-}
-</style>
-	
-		
 	<c:choose>
 		<c:when test="${!EditCategory}">
 			<div class="container" data-ng-app="myApp"
@@ -98,11 +83,11 @@ table, td, th {
 					<input
 						class="w3-input w3-animate-input w3-border w3-round w3-small"
 						data-ng-model="search" type="text" placeholder=" Search Category"
-						style="width: 60%">
+						style="width: 20%">
 
 				</form>
 				<br>
-				<table class="table table-bordered table-hover ">
+				<table class="table table-bordered table-striped">
 					<thead>
 						<tr >
 							<th>Category ID</th>
@@ -118,9 +103,9 @@ table, td, th {
 							<td >{{category.id}}</td>
 							<td>{{category.name}}</td>
 							<td>{{category.description}}</td>
-							<td><a class="btn btn-info btn-xs"
+							<td><a class="w3-btn w3-blue"
 								href="editcategory/{{category.id}}">Edit</a></td>
-							<td><a class="btn btn-info btn-xs"
+							<td><a class="w3-btn w3-red"
 								href="removecategory/{{category.id}}">Delete</a></td>
 						</tr>
 					</tbody>
@@ -131,7 +116,6 @@ table, td, th {
 			<div style="margin-bottom: 70px"></div>
 		</c:otherwise>
 	</c:choose>
-		</center>
-	</c:if>
+	
 </body>
 </html>

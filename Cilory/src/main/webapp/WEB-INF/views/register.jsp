@@ -17,8 +17,7 @@
 <div class="fluid">
 <c:url var="addAction" value="adduser"></c:url>
 <form:form action="${addAction}" commandName="userDetails" method="post">
-
-		
+<center>
 				<div>
 					<form:input path="name" type="text" placeholder="Name" 
 						pattern=".{5,15}" required="true" id="username" name="username"
@@ -50,7 +49,7 @@
 					<input type="submit" value="Register" /> <a href="#">Lost your
 						password?</a> <a href="login">Sign In</a>
 				</div>
-
-			</form:form>	</div>
+</center>
+</form:form>	</div>
 </body>
 </html>

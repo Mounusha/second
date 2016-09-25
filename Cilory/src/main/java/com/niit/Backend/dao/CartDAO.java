@@ -5,7 +5,6 @@ import java.util.List;
 import com.niit.Backend.model.Cart;
 
 public interface CartDAO {
-
 	public List<Cart> list();
 
 	public List<Cart> get(int userId);
@@ -18,7 +17,7 @@ public interface CartDAO {
 	
 	public long CartPrice(int userId);	
 	
-	public Cart getitem(String prodId,int userId);
+	public Cart getitem(int productid,int userId);
 	
 	public long cartsize(int userId);
 	

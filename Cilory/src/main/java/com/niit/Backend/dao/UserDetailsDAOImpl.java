@@ -10,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import com.niit.Backend.model.UserDetails;
+
+
 
 @SuppressWarnings("deprecation")
 @Repository("userDetailsDAO")
@@ -49,7 +52,7 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
 
 	@Transactional
 	public UserDetails get(int id) {
-		String hql = "from"+" UserDetails"+" where userId="+"id";
+		String hql = "from"+" UserDetails"+" where userId="+id;
 		@SuppressWarnings("rawtypes")
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
 		
@@ -59,26 +62,27 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
 		if (listUser != null && !listUser.isEmpty()) {
 			return listUser.get(0);
 		}
-		
 		return null;
 	}
-@SuppressWarnings("rawtypes")
-@Transactional
-public boolean isValidUser(String userName, String password) {
-	Criteria c=sessionFactory.getCurrentSession().createCriteria(UserDetails.class);
-	c.add(Restrictions.eq("userName",userName));
-	c.add(Restrictions.eq("password",password));
+
 	
-	List list = c.list();
-	if(list==null || list.isEmpty())
-	{
-		return false;
+	@SuppressWarnings("rawtypes")
+	@Transactional
+	public boolean isValidUser(String userName, String password) {
+		Criteria c=sessionFactory.getCurrentSession().createCriteria(UserDetails.class);
+		c.add(Restrictions.eq("userName",userName));
+		c.add(Restrictions.eq("password",password));
+		
+		List list = c.list();
+		if(list==null || list.isEmpty())
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
 	}
-	else
-	{
-		return true;
-	}
-}
 	@Transactional
 	public UserDetails get(String userName) {
 		Criteria c=sessionFactory.getCurrentSession().createCriteria(UserDetails.class);
@@ -93,7 +97,7 @@ public boolean isValidUser(String userName, String password) {
 		else {
 			return null;
 		}
+
 	}
 
 }
-

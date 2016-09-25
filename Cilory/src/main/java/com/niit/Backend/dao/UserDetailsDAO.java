@@ -18,5 +18,6 @@ public interface UserDetailsDAO {
 	public boolean isValidUser(String userName,String password);
 	
 	public UserDetails get(String userName);
+	
 
 }

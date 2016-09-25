@@ -5,9 +5,9 @@ import com.niit.Backend.model.*;
 
 public interface CategoryDAO {
 	public List<Category> list();
-	public Category get(String id);
+	public Category get(int id);
 	public void saveorUpdate(Category category);
-	public void delete(String id);
+	public void delete(int id);
 	
 
 }

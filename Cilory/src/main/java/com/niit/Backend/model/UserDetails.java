@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserDetails {
 	
+
 	@Id
 	@GeneratedValue
 	@Column(name = "userId")
@@ -24,6 +25,8 @@ public class UserDetails {
 	private String email;
 	private String role;
 	private String enabled;
+	
+	
 	public int getUserId() {
 		return userId;
 	}
@@ -74,6 +77,4 @@ public class UserDetails {
 	}
 	
 	
-		
-
 }

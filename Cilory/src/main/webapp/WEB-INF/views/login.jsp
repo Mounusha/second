@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,35 +13,24 @@
 </head>
 <body>
 <nav class="navbar navbar"></nav>
-  <h1 style="font-family:verdana">LOGIN FORM</h1>
-<body>
-
-
-	<form action="perform_login" method="post">
-		<div class="panel panel-primary">
-			<div class="panel-heading center">LOGIN</div>
-			<div class="panel-body">
-				<div class="well well-sm">
-				Username:
-					<input type="text" placeholder="Username" required id="username" name="username"
-					pattern=".{5,10}"title="minimum length for name is 5"/>
-				</div>
-				</div>
-			<div class="panel-body">
-				<div class="well well-sm">
-				Password:
-					<input type="password" placeholder="Password" required id="password" name="password" 
-				title="enter valid credentials"/>
-				</div>
-			</div>
-			<div class="panel-body">
-					<label><input type="checkbox"> Remember me</label>
-				</div>
+ <center> <h1 style="font-family:verdana">LOGIN FORM</h1></center><br>
+			<form action="perform_login" method="post">
+			<center>
 				<div>
-					<input type="submit" value="Log in" /> <br></div>
-</div>
-
-	</form>
+					<input type="text" placeholder="Username" required id="username" name="username" 
+						pattern=".{5,10}" title="minimum length for name is 5"/>
+				</div>
+				
+				<div>
+					<input type="password" placeholder="Password" required id="password" name="password" 
+					 pattern=".{3,8}" title="Enter Valid credentials"/>
+				</div><br>
+				<div>
+					<input type="submit" value="Log in" />  <a href="Register">Register</a>
+				</div>
+			</form>
+	</div></div>
+	</center>
 </body>
 </html>
 
